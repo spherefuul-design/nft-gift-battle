@@ -1,126 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official NFT Gifts</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    /* ====== GENERAL ====== */
-    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: radial-gradient(circle at top, #1a0033, #000); color:#fff; }
-    h1, h2, h3 { margin-bottom: 15px; }
-    button { border:none; border-radius:12px; cursor:pointer; font-size:16px; margin:10px; padding:12px 25px; }
-    .primary { background: linear-gradient(90deg,#a855f7,#22c55e); color:#000; }
-    .secondary { background: transparent; border:1px solid #a855f7; color:#fff; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cases TG App</title>
 
-    /* ====== HEADER ====== */
-    .header { display:flex; justify-content:space-between; padding:20px 40px; align-items:center; }
-    .logo { font-size:24px; font-weight:bold; }
-    .logo span { color:#a855f7; }
-    nav a { margin-left:20px; text-decoration:none; color:#fff; opacity:0.8; }
-    nav a:hover { opacity:1; }
+<!-- Telegram -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    /* ====== HERO ====== */
-    .hero { text-align:center; padding:100px 20px; }
-    .hero h1 { font-size:56px; background: linear-gradient(90deg,#a855f7,#22c55e); -webkit-background-clip:text; color:transparent; }
-    .hero p { margin-top:15px; opacity:0.8; }
-    .hero-buttons { margin-top:40px; }
+<!-- React -->
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 
-    /* ====== CASES ====== */
-    .cases { padding:80px 40px; text-align:center; }
-    .case-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:40px; }
-    .case-card { background: rgba(255,255,255,0.05); border-radius:20px; padding:30px; backdrop-filter:blur(10px); transition: transform 0.3s; }
-    .case-card:hover { transform: translateY(-10px); }
-    .legendary { box-shadow:0 0 30px gold; }
-    .epic { box-shadow:0 0 30px purple; }
-    .rare { box-shadow:0 0 30px dodgerblue; }
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#0e1015;
+  color:#fff;
+  font-family:system-ui,-apple-system;
+}
+#root{
+  max-width:430px;
+  margin:auto;
+  padding-bottom:90px;
+}
 
-    /* ====== BATTLE ====== */
-    .battle { text-align:center; padding:80px 20px; background: rgba(0,0,0,0.4); }
+/* ====== CARDS ====== */
+.card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:18px;
+  border-radius:22px;
+  margin:14px;
+  transition:.15s;
+}
+.card:active{transform:scale(.97)}
+.icon{font-size:34px}
 
-    /* ====== FOOTER ====== */
-    .footer { padding:30px; text-align:center; opacity:0.6; }
+/* ====== TYPES ====== */
+.free{background:linear-gradient(180deg,#3b3f4a,#252833)}
+.blue{
+  background:linear-gradient(180deg,#3478ff,#244dbf);
+  box-shadow:0 0 18px rgba(52,120,255,.7);
+}
+.red{
+  background:linear-gradient(180deg,#ff7b2f,#b84615);
+  box-shadow:0 0 18px rgba(255,123,47,.6);
+}
+.green{
+  background:linear-gradient(180deg,#2fbf71,#1c8a4f);
+  box-shadow:0 0 18px rgba(47,191,113,.6);
+}
+.purple{
+  background:linear-gradient(180deg,#8b5cff,#5c36c9);
+  box-shadow:0 0 18px rgba(139,92,255,.6);
+}
 
-    /* ====== MOBILE ====== */
-    @media(max-width:768px){
-      .header { flex-direction:column; }
-      nav { margin-top:15px; }
-      .hero h1 { font-size:36px; }
-      .case-grid { grid-template-columns:1fr; }
-    }
-  </style>
+/* ====== LIVE ====== */
+.live{
+  display:flex;
+  gap:10px;
+  padding:12px 14px;
+  overflow-x:auto;
+}
+.live div{
+  background:#1a1d26;
+  padding:10px;
+  border-radius:14px;
+  font-size:22px;
+}
+
+/* ====== BALANCE ====== */
+.top{
+  display:flex;
+  gap:10px;
+  padding:14px;
+}
+.balance{
+  flex:1;
+  background:#1a1d26;
+  border-radius:18px;
+  padding:10px 14px;
+  display:flex;
+  justify-content:space-between;
+}
+
+/* ====== BOTTOM ====== */
+.bottom{
+  position:fixed;
+  bottom:0; left:0; right:0;
+  background:#12141b;
+  display:flex;
+  justify-content:space-around;
+  padding:12px 0;
+  border-top:1px solid #222;
+}
+.bottom div{opacity:.6}
+.bottom .active{opacity:1}
+
+/* ====== MODAL ====== */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.modalBox{
+  background:#1a1d26;
+  padding:24px;
+  border-radius:20px;
+  text-align:center;
+  width:80%;
+}
+</style>
 </head>
+
 <body>
-
-<header class="header">
-  <div class="logo">Official <span>NFT Gifts</span></div>
-  <nav>
-    <a href="#">Cases</a>
-    <a href="#">Battles</a>
-    <a href="#">Gifts</a>
-    <a href="#">Login</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <h1>Open. Gift. Battle.</h1>
-  <p>Official NFT gifts for Web3 users</p>
-  <div class="hero-buttons">
-    <button class="btn primary" id="open-case">Open Case</button>
-    <button class="btn secondary" id="start-battle">Start Battle</button>
-  </div>
-</section>
-
-<section class="cases">
-  <h2>🔥 Popular Cases</h2>
-  <div class="case-grid">
-    <div class="case-card legendary">
-      <h3>Legendary Case</h3>
-      <p>Up to 5 ETH</p>
-      <button class="btn primary">Open</button>
-    </div>
-    <div class="case-card epic">
-      <h3>Epic Case</h3>
-      <p>Rare NFTs</p>
-      <button class="btn primary">Open</button>
-    </div>
-    <div class="case-card rare">
-      <h3>Rare Case</h3>
-      <p>Best value</p>
-      <button class="btn primary">Open</button>
-    </div>
-  </div>
-</section>
-
-<section class="battle">
-  <h2>⚔️ NFT Battles</h2>
-  <p>Open cases and compete with other players</p>
-  <button class="btn secondary" id="join-battle">Join Battle</button>
-</section>
-
-<footer class="footer">
-  <p>© 2026 Official NFT Gifts. Web3 Ready.</p>
-</footer>
+<div id="root"></div>
 
 <script>
-  // Telegram Web App integration
+const {useState} = React;
+
+function App(){
   const tg = window.Telegram.WebApp;
-  tg.expand(); // fullscreen
+  tg.expand();
 
-  console.log("User info:", tg.initDataUnsafe.user); // id, username, first_name
+  const [stars,setStars]=useState(62);
+  const [modal,setModal]=useState(null);
 
-  // Buttons
-  document.getElementById('open-case').addEventListener('click', () => {
-    alert("🚀 Open Case action coming soon!");
-  });
-  document.getElementById('start-battle').addEventListener('click', () => {
-    alert("⚔️ Battle starting soon!");
-  });
-  document.getElementById('join-battle').addEventListener('click', () => {
-    alert("🎁 Joining NFT Battle!");
-  });
+  function openCase(name,cost){
+    if(stars<cost){
+      tg.showAlert("Недостатньо ⭐");
+      return;
+    }
+    setStars(stars-cost);
+    const win = Math.floor(Math.random()*100);
+    setModal(name+" 🎁\\nВиграш: "+win+" ⭐");
+    setStars(s=>s+win);
+  }
+
+  return (
+    <>
+      <div className="top">
+        <div className="balance">⭐ {stars}</div>
+        <div className="balance">🎟 0</div>
+      </div>
+
+      <div className="live">
+        <div>🎁</div><div>💎</div><div>🎲</div><div>🎰</div><div>🍀</div>
+      </div>
+
+      <Card cls="free" icon="🎁" title="Безплатно" sub="2 кейси" onClick={()=>openCase("Безплатний",0)} />
+      <Card cls="blue" icon="⭐" title="Рулетка" sub="13 кейсів" onClick={()=>openCase("Рулетка",10)} />
+      <Card cls="red" icon="🎰" title="Слоти" sub="5 кейсів" onClick={()=>openCase("Слоти",15)} />
+      <Card cls="green" icon="🥚" title="Яйця" sub="6 кейсів" onClick={()=>openCase("Яйця",12)} />
+      <Card cls="purple" icon="🤖" title="Апгрейд" sub="Покращити подарунки" onClick={()=>openCase("Апгрейд",20)} />
+
+      <div className="bottom">
+        <div className="active">📦</div>
+        <div>🏆</div>
+        <div>📋</div>
+        <div>🌍</div>
+        <div>👤</div>
+      </div>
+
+      {modal &&
+        <div className="modal" onClick={()=>setModal(null)}>
+          <div className="modalBox">{modal}</div>
+        </div>
+      }
+    </>
+  )
+}
+
+function Card({cls,icon,title,sub,onClick}){
+  return(
+    <div className={"card "+cls} onClick={onClick}>
+      <div className="icon">{icon}</div>
+      <div>
+        <div style={{fontSize:18,fontWeight:600}}>{title}</div>
+        <div style={{opacity:.7}}>{sub}</div>
+      </div>
+    </div>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
 </script>
-
 </body>
 </html>
