@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Official NFT Gifts</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    /* ====== GENERAL ====== */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: radial-gradient(circle at top, #1a0033, #000); color:#fff; }
+    h1, h2, h3 { margin-bottom: 15px; }
+    button { border:none; border-radius:12px; cursor:pointer; font-size:16px; margin:10px; padding:12px 25px; }
+    .primary { background: linear-gradient(90deg,#a855f7,#22c55e); color:#000; }
+    .secondary { background: transparent; border:1px solid #a855f7; color:#fff; }
+
+    /* ====== HEADER ====== */
+    .header { display:flex; justify-content:space-between; padding:20px 40px; align-items:center; }
+    .logo { font-size:24px; font-weight:bold; }
+    .logo span { color:#a855f7; }
+    nav a { margin-left:20px; text-decoration:none; color:#fff; opacity:0.8; }
+    nav a:hover { opacity:1; }
+
+    /* ====== HERO ====== */
+    .hero { text-align:center; padding:100px 20px; }
+    .hero h1 { font-size:56px; background: linear-gradient(90deg,#a855f7,#22c55e); -webkit-background-clip:text; color:transparent; }
+    .hero p { margin-top:15px; opacity:0.8; }
+    .hero-buttons { margin-top:40px; }
+
+    /* ====== CASES ====== */
+    .cases { padding:80px 40px; text-align:center; }
+    .case-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:40px; }
+    .case-card { background: rgba(255,255,255,0.05); border-radius:20px; padding:30px; backdrop-filter:blur(10px); transition: transform 0.3s; }
+    .case-card:hover { transform: translateY(-10px); }
+    .legendary { box-shadow:0 0 30px gold; }
+    .epic { box-shadow:0 0 30px purple; }
+    .rare { box-shadow:0 0 30px dodgerblue; }
+
+    /* ====== BATTLE ====== */
+    .battle { text-align:center; padding:80px 20px; background: rgba(0,0,0,0.4); }
+
+    /* ====== FOOTER ====== */
+    .footer { padding:30px; text-align:center; opacity:0.6; }
+
+    /* ====== MOBILE ====== */
+    @media(max-width:768px){
+      .header { flex-direction:column; }
+      nav { margin-top:15px; }
+      .hero h1 { font-size:36px; }
+      .case-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Official <span>NFT Gifts</span></div>
+  <nav>
+    <a href="#">Cases</a>
+    <a href="#">Battles</a>
+    <a href="#">Gifts</a>
+    <a href="#">Login</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Open. Gift. Battle.</h1>
+  <p>Official NFT gifts for Web3 users</p>
+  <div class="hero-buttons">
+    <button class="btn primary" id="open-case">Open Case</button>
+    <button class="btn secondary" id="start-battle">Start Battle</button>
+  </div>
+</section>
+
+<section class="cases">
+  <h2>🔥 Popular Cases</h2>
+  <div class="case-grid">
+    <div class="case-card legendary">
+      <h3>Legendary Case</h3>
+      <p>Up to 5 ETH</p>
+      <button class="btn primary">Open</button>
+    </div>
+    <div class="case-card epic">
+      <h3>Epic Case</h3>
+      <p>Rare NFTs</p>
+      <button class="btn primary">Open</button>
+    </div>
+    <div class="case-card rare">
+      <h3>Rare Case</h3>
+      <p>Best value</p>
+      <button class="btn primary">Open</button>
+    </div>
+  </div>
+</section>
+
+<section class="battle">
+  <h2>⚔️ NFT Battles</h2>
+  <p>Open cases and compete with other players</p>
+  <button class="btn secondary" id="join-battle">Join Battle</button>
+</section>
+
+<footer class="footer">
+  <p>© 2026 Official NFT Gifts. Web3 Ready.</p>
+</footer>
+
+<script>
+  // Telegram Web App integration
+  const tg = window.Telegram.WebApp;
+  tg.expand(); // fullscreen
+
+  console.log("User info:", tg.initDataUnsafe.user); // id, username, first_name
+
+  // Buttons
+  document.getElementById('open-case').addEventListener('click', () => {
+    alert("🚀 Open Case action coming soon!");
+  });
+  document.getElementById('start-battle').addEventListener('click', () => {
+    alert("⚔️ Battle starting soon!");
+  });
+  document.getElementById('join-battle').addEventListener('click', () => {
+    alert("🎁 Joining NFT Battle!");
+  });
+</script>
+
+</body>
+</html>
