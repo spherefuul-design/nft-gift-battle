@@ -17,15 +17,14 @@
   body {
     background-color: #ffffff;
     font-family: 'Jost', sans-serif;
+    overflow-x: hidden;
   }
 
   header {
     width: 100%;
     padding: 6vw 5% 6vw 8%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
+    position: relative;
+    z-index: 20;
   }
 
   .brand {
@@ -39,8 +38,18 @@
     letter-spacing: 0.15em;
     color: #1a1a1a;
     text-transform: uppercase;
-    white-space: nowrap;
     line-height: 1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .logo span {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .logo span:first-child {
+    margin-right: 0.3em;
   }
 
   .tagline {
@@ -58,35 +67,103 @@
     }
   }
 
-  .icons {
-    display: flex;
-    align-items: center;
-    gap: clamp(14px, 3vw, 26px);
-    flex-shrink: 0;
+  /* ===== Панель (общая для корзины и поиска) ===== */
+  .panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    z-index: 30;
   }
 
-  .icon-btn {
+  .panel-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(400px, 100%);
+    height: 100%;
+    background: #ffffff;
+    border-left: 1px solid #eaeaea;
+    transition: right 0.4s ease;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    padding: 8vw 7% 7%;
+  }
+
+  .panel.active {
+    right: 0;
+  }
+
+  .panel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6vw;
+  }
+
+  .panel-title {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+  }
+
+  .close-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 4px;
   }
 
-  .icon-btn svg {
-    width: clamp(20px, 4.5vw, 26px);
-    height: clamp(20px, 4.5vw, 26px);
+  .close-btn svg {
+    width: 20px;
+    height: 20px;
     stroke: #1a1a1a;
-    fill: none;
     stroke-width: 1.3;
-    stroke-linecap: round;
-    stroke-linejoin: round;
   }
 
-  .icon-btn:hover svg {
-    opacity: 0.6;
+  /* ===== Корзина ===== */
+  .cart-empty {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: #888;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== Поиск ===== */
+  .search-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 10px 0;
+    font-family: 'Jost', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    color: #1a1a1a;
+    background: transparent;
+    outline: none;
+  }
+
+  .search-input::placeholder {
+    color: #aaa;
+    font-weight: 300;
+  }
+
+  .search-hint {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #aaa;
+    letter-spacing: 0.02em;
   }
 </style>
 </head>
@@ -94,28 +171,77 @@
 
 <header>
   <div class="brand">
-    <div class="logo">Shmoto Diller</div>
+    <div class="logo">
+      <span id="openCart">Shmoto</span><span id="openSearch">Diller</span>
+    </div>
     <div class="tagline">only legit items!</div>
   </div>
+</header>
 
-  <div class="icons">
-    <button class="icon-btn" aria-label="Кошик">
-      <svg viewBox="0 0 24 24">
-        <path d="M6 6h15l-1.5 9h-12z"></path>
-        <path d="M6 6l-1-3H2"></path>
-        <circle cx="9" cy="20" r="1"></circle>
-        <circle cx="17" cy="20" r="1"></circle>
-      </svg>
-    </button>
+<!-- Затемнение фона -->
+<div class="panel-overlay" id="overlay"></div>
 
-    <button class="icon-btn" aria-label="Пошук">
-      <svg viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="7"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+<!-- Панель корзины -->
+<div class="panel" id="cartPanel">
+  <div class="panel-top">
+    <div class="panel-title">Кошик</div>
+    <button class="close-btn" id="closeCart">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round">
+        <line x1="4" y1="4" x2="20" y2="20"></line>
+        <line x1="20" y1="4" x2="4" y2="20"></line>
       </svg>
     </button>
   </div>
-</header>
+  <div class="cart-empty">Ваш кошик порожній</div>
+</div>
+
+<!-- Панель поиска -->
+<div class="panel" id="searchPanel">
+  <div class="panel-top">
+    <div class="panel-title">Пошук</div>
+    <button class="close-btn" id="closeSearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round">
+        <line x1="4" y1="4" x2="20" y2="20"></line>
+        <line x1="20" y1="4" x2="4" y2="20"></line>
+      </svg>
+    </button>
+  </div>
+  <input type="text" class="search-input" placeholder="Введіть назву товару..." id="searchInput">
+  <div class="search-hint">Почніть вводити, щоб знайти товар</div>
+</div>
+
+<script>
+  const overlay = document.getElementById('overlay');
+  const cartPanel = document.getElementById('cartPanel');
+  const searchPanel = document.getElementById('searchPanel');
+
+  const openCart = document.getElementById('openCart');
+  const openSearch = document.getElementById('openSearch');
+  const closeCart = document.getElementById('closeCart');
+  const closeSearch = document.getElementById('closeSearch');
+  const searchInput = document.getElementById('searchInput');
+
+  function openPanel(panel) {
+    overlay.classList.add('active');
+    panel.classList.add('active');
+  }
+
+  function closeAllPanels() {
+    overlay.classList.remove('active');
+    cartPanel.classList.remove('active');
+    searchPanel.classList.remove('active');
+  }
+
+  openCart.addEventListener('click', () => openPanel(cartPanel));
+  openSearch.addEventListener('click', () => {
+    openPanel(searchPanel);
+    setTimeout(() => searchInput.focus(), 400);
+  });
+
+  closeCart.addEventListener('click', closeAllPanels);
+  closeSearch.addEventListener('click', closeAllPanels);
+  overlay.addEventListener('click', closeAllPanels);
+</script>
 
 </body>
 </html>
