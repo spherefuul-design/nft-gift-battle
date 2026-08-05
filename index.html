@@ -1,195 +1,61 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Cases TG App</title>
-
-<!-- Telegram -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<!-- React -->
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shmoto Diller</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#0e1015;
-  color:#fff;
-  font-family:system-ui,-apple-system;
-}
-#root{
-  max-width:430px;
-  margin:auto;
-  padding-bottom:90px;
-}
-
-/* ====== CARDS ====== */
-.card{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:18px;
-  border-radius:22px;
-  margin:14px;
-  transition:.15s;
-}
-.card:active{transform:scale(.97)}
-.icon{font-size:34px}
-
-/* ====== TYPES ====== */
-.free{background:linear-gradient(180deg,#3b3f4a,#252833)}
-.blue{
-  background:linear-gradient(180deg,#3478ff,#244dbf);
-  box-shadow:0 0 18px rgba(52,120,255,.7);
-}
-.red{
-  background:linear-gradient(180deg,#ff7b2f,#b84615);
-  box-shadow:0 0 18px rgba(255,123,47,.6);
-}
-.green{
-  background:linear-gradient(180deg,#2fbf71,#1c8a4f);
-  box-shadow:0 0 18px rgba(47,191,113,.6);
-}
-.purple{
-  background:linear-gradient(180deg,#8b5cff,#5c36c9);
-  box-shadow:0 0 18px rgba(139,92,255,.6);
-}
-
-/* ====== LIVE ====== */
-.live{
-  display:flex;
-  gap:10px;
-  padding:12px 14px;
-  overflow-x:auto;
-}
-.live div{
-  background:#1a1d26;
-  padding:10px;
-  border-radius:14px;
-  font-size:22px;
-}
-
-/* ====== BALANCE ====== */
-.top{
-  display:flex;
-  gap:10px;
-  padding:14px;
-}
-.balance{
-  flex:1;
-  background:#1a1d26;
-  border-radius:18px;
-  padding:10px 14px;
-  display:flex;
-  justify-content:space-between;
-}
-
-/* ====== BOTTOM ====== */
-.bottom{
-  position:fixed;
-  bottom:0; left:0; right:0;
-  background:#12141b;
-  display:flex;
-  justify-content:space-around;
-  padding:12px 0;
-  border-top:1px solid #222;
-}
-.bottom div{opacity:.6}
-.bottom .active{opacity:1}
-
-/* ====== MODAL ====== */
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.modalBox{
-  background:#1a1d26;
-  padding:24px;
-  border-radius:20px;
-  text-align:center;
-  width:80%;
-}
-</style>
-</head>
-
-<body>
-<div id="root"></div>
-
-<script>
-const {useState} = React;
-
-function App(){
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-
-  const [stars,setStars]=useState(62);
-  const [modal,setModal]=useState(null);
-
-  function openCase(name,cost){
-    if(stars<cost){
-      tg.showAlert("Недостатньо ⭐");
-      return;
-    }
-    setStars(stars-cost);
-    const win = Math.floor(Math.random()*100);
-    setModal(name+" 🎁\\nВиграш: "+win+" ⭐");
-    setStars(s=>s+win);
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
-  return (
-    <>
-      <div className="top">
-        <div className="balance">⭐ {stars}</div>
-        <div className="balance">🎟 0</div>
-      </div>
+  body {
+    background-color: #ffffff;
+    font-family: 'Jost', sans-serif;
+  }
 
-      <div className="live">
-        <div>🎁</div><div>💎</div><div>🎲</div><div>🎰</div><div>🍀</div>
-      </div>
+  header {
+    width: 100%;
+    padding: 10vw 5% 6vw 8%;
+  }
 
-      <Card cls="free" icon="🎁" title="Безплатно" sub="2 кейси" onClick={()=>openCase("Безплатний",0)} />
-      <Card cls="blue" icon="⭐" title="Рулетка" sub="13 кейсів" onClick={()=>openCase("Рулетка",10)} />
-      <Card cls="red" icon="🎰" title="Слоти" sub="5 кейсів" onClick={()=>openCase("Слоти",15)} />
-      <Card cls="green" icon="🥚" title="Яйця" sub="6 кейсів" onClick={()=>openCase("Яйця",12)} />
-      <Card cls="purple" icon="🤖" title="Апгрейд" sub="Покращити подарунки" onClick={()=>openCase("Апгрейд",20)} />
+  .logo {
+    font-size: clamp(2rem, 8vw, 4rem);
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1;
+  }
 
-      <div className="bottom">
-        <div className="active">📦</div>
-        <div>🏆</div>
-        <div>📋</div>
-        <div>🌍</div>
-        <div>👤</div>
-      </div>
+  .tagline {
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    font-weight: 300;
+    color: #1a1a1a;
+    margin-top: -2px;
+    margin-left: 2px;
+    letter-spacing: 0.02em;
+  }
 
-      {modal &&
-        <div className="modal" onClick={()=>setModal(null)}>
-          <div className="modalBox">{modal}</div>
-        </div>
-      }
-    </>
-  )
-}
+  @media (max-width: 480px) {
+    .logo {
+      letter-spacing: 0.08em;
+    }
+  }
+</style>
+</head>
+<body>
 
-function Card({cls,icon,title,sub,onClick}){
-  return(
-    <div className={"card "+cls} onClick={onClick}>
-      <div className="icon">{icon}</div>
-      <div>
-        <div style={{fontSize:18,fontWeight:600}}>{title}</div>
-        <div style={{opacity:.7}}>{sub}</div>
-      </div>
-    </div>
-  )
-}
+<header>
+  <div class="logo">Shmoto Diller</div>
+  <div class="tagline">only legit items!</div>
+</header>
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>)
-</script>
 </body>
 </html>
